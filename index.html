@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Finance Planner – Login</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    /* Inline styling to keep the login page minimal without requiring external CSS at first load */
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      font-family: Arial, sans-serif;
+      background-color: #f0f8f4;
+      margin: 0;
+    }
+    .auth-container {
+      background: #ffffff;
+      padding: 2rem;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      width: 90%;
+      max-width: 400px;
+    }
+    .auth-container h2 {
+      margin-top: 0;
+      color: #2f7a32;
+    }
+    .auth-container form {
+      display: none;
+      flex-direction: column;
+    }
+    .auth-container form.active {
+      display: flex;
+    }
+    .auth-container input {
+      margin-bottom: 1rem;
+      padding: 0.75rem;
+      font-size: 1rem;
+      border-radius: 4px;
+      border: 1px solid #ccc;
+    }
+    .auth-container button {
+      background-color: #2f7a32;
+      color: white;
+      padding: 0.75rem;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 1rem;
+    }
+    .auth-container button:hover {
+      background-color: #276728;
+    }
+    .toggle-link {
+      margin-top: 1rem;
+      text-align: center;
+      cursor: pointer;
+      color: #2f7a32;
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <div class="auth-container">
+    <h2 id="form-title">Login</h2>
+    <!-- Login Form -->
+    <form id="login-form" class="active">
+      <input type="text" id="login-username" placeholder="Username" required />
+      <input type="password" id="login-password" placeholder="Password" required />
+      <button type="submit">Login</button>
+    </form>
+    <!-- Sign Up Form -->
+    <form id="signup-form">
+      <input type="text" id="signup-username" placeholder="Username" required />
+      <input type="password" id="signup-password" placeholder="Password" required />
+      <input type="password" id="signup-confirm" placeholder="Confirm Password" required />
+      <button type="submit">Sign Up</button>
+    </form>
+    <div class="toggle-link" id="toggle-link">Don't have an account? Sign up</div>
+  </div>
+
+  <script>
+    // Authentication logic
+    const loginForm = document.getElementById('login-form');
+    const signupForm = document.getElementById('signup-form');
+    const formTitle = document.getElementById('form-title');
+    const toggleLink = document.getElementById('toggle-link');
+
+    // Load stored users from localStorage
+    function getUsers() {
+      return JSON.parse(localStorage.getItem('users') || '{}');
+    }
+    function setUsers(users) {
+      localStorage.setItem('users', JSON.stringify(users));
+    }
+
+    // Toggle between login and signup forms
+    toggleLink.addEventListener('click', () => {
+      if (loginForm.classList.contains('active')) {
+        loginForm.classList.remove('active');
+        signupForm.classList.add('active');
+        formTitle.textContent = 'Sign Up';
+        toggleLink.textContent = 'Already have an account? Login';
+      } else {
+        signupForm.classList.remove('active');
+        loginForm.classList.add('active');
+        formTitle.textContent = 'Login';
+        toggleLink.textContent = "Don't have an account? Sign up";
+      }
+    });
+
+    // Login handler
+    loginForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const username = document.getElementById('login-username').value;
+      const password = document.getElementById('login-password').value;
+      const users = getUsers();
+      if (users[username] && users[username].password === password) {
+        // Successful login
+        // Save current user in session storage
+        sessionStorage.setItem('currentUser', username);
+        // Navigate to dashboard
+        window.location.href = 'dashboard.html';
+      } else {
+        alert('Invalid username or password');
+      }
+    });
+
+    // Sign up handler
+    signupForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const username = document.getElementById('signup-username').value;
+      const password = document.getElementById('signup-password').value;
+      const confirm = document.getElementById('signup-confirm').value;
+      const users = getUsers();
+      if (password !== confirm) {
+        alert('Passwords do not match');
+        return;
+      }
+      if (users[username]) {
+        alert('Username already exists');
+        return;
+      }
+      // Create new user with empty data
+      users[username] = { password, budgets: [], goals: [], expenses: [] };
+      setUsers(users);
+      alert('Account created successfully! You can now login.');
+      // Switch to login form after signup
+      signupForm.classList.remove('active');
+      loginForm.classList.add('active');
+      formTitle.textContent = 'Login';
+      toggleLink.textContent = "Don't have an account? Sign up";
+    });
+  </script>
+</body>
+</html>
