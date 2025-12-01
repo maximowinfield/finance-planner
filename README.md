@@ -21,3 +21,29 @@ Built with **HTML, CSS, and JavaScript** as a way to practice front-end developm
 1. Clone the repo:
    ```bash
    git clone https://github.com/maximowinfield/finance-planner.git
+Open index.html in your browser.
+
+No build step, no backend — just open and go.
+
+📌 Future Improvements (Ideas)
+
+Add localStorage so data persists between refreshes
+
+Add charts for spending by category
+
+Add authentication and a backend in Node.js or .NET
+
+Export data to CSV
+
+🎯 Purpose
+
+This project is meant to demonstrate:
+
+Front-end skills (layout, styling, DOM)
+
+Handling user input and dynamic UI updates
+
+Organizing JavaScript into small, readable functions
+
+Later add a little `<img>` screenshot and deploy it to GitHub Pages.
+
