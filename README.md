@@ -1,5 +1,5 @@
 # Finance Planner
-
+https://maximowinfield.github.io/finance-planner/
 A simple web-based personal finance planner to track income, expenses, and savings goals.  
 Built with **HTML, CSS, and JavaScript** as a way to practice front-end development and DOM manipulation.
 
